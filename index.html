@@ -2,6 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>
+  // Always open the page at the top, even if the URL still has a #section
+  // hash left over from a previous click (e.g. from "Order Now" or a nav link).
+  if('scrollRestoration' in history){ history.scrollRestoration = 'manual'; }
+  window.scrollTo(0, 0);
+  window.addEventListener('load', function(){
+    window.scrollTo(0, 0);
+    if(window.location.hash){
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  });
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kidney Remedy | Real Customer Stories &amp; Kidney Support Protocol</title>
 <meta name="description" content="Plant-based kidney support with real, attributed customer testimonials. Works alongside your care team, not a replacement for dialysis or medical treatment.">
