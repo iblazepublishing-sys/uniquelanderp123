@@ -257,9 +257,13 @@
   .video-embed video{width:100%;height:100%;object-fit:cover;display:block;}
   .video-caption{margin-top:10px;font-size:13px;color:var(--ink-faint);text-align:center;}
 
+  .table-scroll{
+    max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;
+    border-radius:var(--radius);border:1px solid var(--line);
+  }
   table.progress{
-    width:100%;border-collapse:collapse;background:var(--white);border-radius:var(--radius);
-    overflow:hidden;border:1px solid var(--line);font-size:14px;
+    width:100%;min-width:560px;border-collapse:collapse;background:var(--white);
+    font-size:14px;
   }
   table.progress th{
     background:var(--tan);color:var(--ink);text-align:left;padding:12px 14px;font-size:12px;
@@ -409,6 +413,10 @@
     section{padding:52px 0;}
     header.site .btn span.long{display:none;}
     .trio-row{gap:18px;}
+    table.progress{min-width:460px;font-size:12.5px;}
+    table.progress th{padding:9px 8px;font-size:10.5px;}
+    table.progress td{padding:9px 8px;}
+    .video-embed{max-width:220px;}
   }
 
   a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible{
@@ -634,6 +642,7 @@
       </div>
 
       <div>
+        <div class="table-scroll">
         <table class="progress">
           <thead>
             <tr><th>Customer</th><th>Stage</th><th>Timeline</th><th>Self-Reported Change</th><th>Status</th></tr>
@@ -653,6 +662,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   </div>
