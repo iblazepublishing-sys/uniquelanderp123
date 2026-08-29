@@ -122,23 +122,25 @@
   .trio-item span{font-size:13.5px;font-weight:600;color:var(--ink-soft);}
 
   .hero-visual{position:relative;}
-  .product-card{
-    background:var(--white);border-radius:20px;box-shadow:var(--shadow);
-    border:1px solid var(--line);padding:36px;position:relative;overflow:hidden;
+  .product-photo{
+    aspect-ratio:4/5;background:var(--tan);border:1.5px dashed var(--tan-line);border-radius:20px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+    text-align:center;padding:30px;color:var(--ink-faint);
   }
-  .product-card .bottle-wrap{display:flex;justify-content:center;padding:10px 0 4px;}
-  .video-badge{
-    position:absolute;bottom:24px;left:24px;right:24px;background:rgba(23,27,31,.92);
-    color:#fff;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;
-    cursor:pointer;
+  .product-photo svg{width:40px;height:40px;color:var(--ink-faint);}
+  .product-photo p{font-weight:700;color:var(--ink-soft);margin:0;font-size:14.5px;}
+  .product-photo span{font-size:12.5px;max-width:230px;}
+  .video-strip{
+    margin-top:16px;background:var(--white);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;
   }
-  .video-badge .play-dot{
-    width:34px;height:34px;border-radius:50%;background:#fff;color:var(--ink);
+  .video-strip .play-dot{
+    width:36px;height:36px;border-radius:50%;background:var(--ink);color:#fff;
     display:flex;align-items:center;justify-content:center;flex-shrink:0;
   }
-  .video-badge .play-dot svg{width:13px;height:13px;}
-  .video-badge .vb-text b{display:block;font-size:13.5px;font-weight:700;}
-  .video-badge .vb-text span{font-size:11.5px;color:#c9cdd6;}
+  .video-strip .play-dot svg{width:13px;height:13px;}
+  .video-strip .vb-text b{display:block;font-size:13.5px;font-weight:700;color:var(--ink);}
+  .video-strip .vb-text span{font-size:11.5px;color:var(--ink-faint);}
 
   .trust-row{border-top:1px solid var(--tan-line);padding:26px 0;display:flex;justify-content:center;
     gap:44px;flex-wrap:wrap;}
@@ -367,6 +369,7 @@
     <symbol id="ic-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5.5 9.5A1.5 1.5 0 0 0 5.8 21h12.4a1.5 1.5 0 0 0 1.3-2.5L14 9V3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.5 15h9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
     <symbol id="ic-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <symbol id="ic-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7Z" fill="currentColor"/></symbol>
+    <symbol id="ic-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8.5" cy="9.5" r="1.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M21 16l-5.5-5.5L9 17" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <symbol id="ic-mark" viewBox="0 0 24 24"><path d="M4 20 12 4l8 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   </defs>
 </svg>
@@ -406,23 +409,16 @@
     </div>
 
     <div class="hero-visual">
-      <div class="product-card">
-        <div class="bottle-wrap">
-          <svg width="180" height="230" viewBox="0 0 180 230" role="img" aria-label="Kidney Remedy bottle illustration — replace with real product photography">
-            <ellipse cx="90" cy="220" rx="55" ry="8" fill="#e4dbc9"/>
-            <rect x="60" y="14" width="60" height="22" rx="5" fill="#171b1f"/>
-            <rect x="40" y="34" width="100" height="176" rx="16" fill="#171b1f"/>
-            <rect x="55" y="90" width="70" height="66" rx="6" fill="#faf7f2"/>
-            <text x="90" y="115" text-anchor="middle" font-size="10" font-weight="700" fill="#171b1f" letter-spacing="1">KIDNEY</text>
-            <text x="90" y="129" text-anchor="middle" font-size="10" font-weight="700" fill="#171b1f" letter-spacing="1">REMEDY</text>
-            <text x="90" y="145" text-anchor="middle" font-size="6.5" fill="#65697a" letter-spacing="1">PLANT MINERAL</text>
-            <text x="90" y="154" text-anchor="middle" font-size="6.5" fill="#65697a" letter-spacing="1">SUPPORT</text>
-          </svg>
-        </div>
-        <div class="video-badge">
-          <span class="play-dot"><svg><use href="#ic-play"/></svg></span>
-          <span class="vb-text"><b>Watch Frank's Story</b><span>90 seconds &middot; real customer video</span></span>
-        </div>
+      <!-- Drop your real product photo in: replace this whole .product-photo div with
+           <img src="your-photo.jpg" alt="Kidney Remedy tablets and liquid bottle" style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:20px;"> -->
+      <div class="product-photo">
+        <svg><use href="#ic-image"/></svg>
+        <p>Add your real product photo here</p>
+        <span>Replace this frame with an actual photo of the Kidney Remedy bottle — no illustration or stock image.</span>
+      </div>
+      <div class="video-strip">
+        <span class="play-dot"><svg><use href="#ic-play"/></svg></span>
+        <span class="vb-text"><b>Watch Frank's Story</b><span>90 seconds &middot; real customer video</span></span>
       </div>
     </div>
   </div>
