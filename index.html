@@ -77,7 +77,7 @@
     text-decoration:none;cursor:pointer;border:1px solid transparent;
     transition:transform .12s ease, opacity .12s ease;
   }
-  .btn-primary{background:var(--ink);color:#fff;}
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 4px 14px rgba(60,110,82,.28);}
   .btn-primary:hover{opacity:.88;}
   .btn-secondary{background:transparent;color:var(--ink);border-color:var(--line);}
   .btn-secondary:hover{background:var(--cream);}
@@ -358,6 +358,18 @@
   .form-fields input,.form-fields select{
     width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:8px;
     margin-bottom:12px;font-size:14.5px;font-family:inherit;background:var(--white);
+  }
+  .stage-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+  .stage-pill{
+    padding:12px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--white);
+    color:var(--ink);font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer;
+    transition:border-color .15s ease, background .15s ease, color .15s ease;
+  }
+  .stage-pill:hover{border-color:var(--accent);}
+  .stage-pill.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .stage-feedback{
+    background:var(--accent-soft);color:var(--accent);border-radius:8px;padding:10px 12px;
+    font-size:13px;font-weight:600;text-align:left;margin:0 0 14px;
   }
 
   /* ---------- SOCIAL PROOF STRIP ---------- */
@@ -802,21 +814,18 @@
       </div>
 
       <div class="order-card" id="orderForm">
-        <div class="form-fields">
-          <label for="fname">First name (optional)</label>
-          <input type="text" id="fname" name="fname" autocomplete="given-name">
-          <label for="email">Email <span aria-hidden="true">*</span></label>
-          <input type="email" id="email" name="email" required autocomplete="email">
-          <label for="phone">Phone <span aria-hidden="true">*</span></label>
-          <input type="tel" id="phone" name="phone" required autocomplete="tel">
-          <label for="stage">CKD Stage (optional)</label>
-          <select id="stage" name="stage">
-            <option value="">Prefer not to say</option>
-            <option>Stage 1</option><option>Stage 2</option><option>Stage 3</option>
-            <option>Stage 4</option><option>Stage 5 / Dialysis</option><option>Not diagnosed</option>
-          </select>
+        <h3 style="margin-bottom:6px;">Where are you starting from?</h3>
+        <p style="color:var(--ink-soft);font-size:14px;margin-bottom:18px;">Pick your stage and we'll point you to the right starting protocol.</p>
+        <div class="stage-grid" id="stageGrid">
+          <button type="button" class="stage-pill" data-stage="Stage 1">Stage 1</button>
+          <button type="button" class="stage-pill" data-stage="Stage 2">Stage 2</button>
+          <button type="button" class="stage-pill" data-stage="Stage 3">Stage 3</button>
+          <button type="button" class="stage-pill" data-stage="Stage 4">Stage 4</button>
+          <button type="button" class="stage-pill" data-stage="Stage 5 / Dialysis">Stage 5 / Dialysis</button>
+          <button type="button" class="stage-pill" data-stage="Not Sure Yet">Not Sure Yet</button>
         </div>
-        <button type="button" class="btn btn-primary btn-block" onclick="handleOrderSubmit(event)">Claim Your 30-Day Supply</button>
+        <p class="stage-feedback" id="stageFeedback" hidden></p>
+        <a href="https://cwbotanicshealth.net/products/kidney-remedy-herbal-therapy-kidney-cleanse-best-for-dialysis?variant=43718698172490" class="btn btn-primary btn-block" id="stageCta">Claim Your 30-Day Supply</a>
         <div class="trust-badges">
           <span class="trust-badge">30-Day Guarantee</span>
           <span class="trust-badge">SSL Secure Checkout</span>
@@ -878,17 +887,36 @@
     window.moveStoryCarousel = function(dir){ goToStory(index + dir); };
   })();
 
-  function handleOrderSubmit(e){
-    e.preventDefault();
-    var email = document.getElementById('email').value.trim();
-    var phone = document.getElementById('phone').value.trim();
-    if(!email || !phone){
-      alert('Please enter your email and phone number to continue.');
-      return;
-    }
-    // Optional: send email/phone/CKD stage to your CRM here before redirecting.
-    window.location.href = 'https://cwbotanicshealth.net/products/kidney-remedy-herbal-therapy-kidney-cleanse-best-for-dialysis?variant=43718698172490';
-  }
+  /* Stage picker: purely a UX personalization touch, not a data-collection form.
+     Nothing here is stored or sent anywhere; it only updates copy on this page
+     and tags the outbound link with the chosen stage. */
+  (function(){
+    var grid = document.getElementById('stageGrid');
+    var feedback = document.getElementById('stageFeedback');
+    var cta = document.getElementById('stageCta');
+    if(!grid || !feedback || !cta) return;
+    var baseHref = cta.getAttribute('href');
+    var messages = {
+      'Stage 1': { text: "Got it. Early support now can make a real difference long-term.", label: "Claim Your Stage 1 Protocol" },
+      'Stage 2': { text: "Got it, Stage 2. Let's help you stay ahead of it.", label: "Claim Your Stage 2 Protocol" },
+      'Stage 3': { text: "Got it, Stage 3. Many customers start right here.", label: "Claim Your Stage 3 Protocol" },
+      'Stage 4': { text: "Got it, Stage 4. Your care team stays in the driver's seat, we're here to support.", label: "Claim Your Stage 4 Protocol" },
+      'Stage 5 / Dialysis': { text: "Got it. Works alongside your dialysis schedule, not instead of it.", label: "Claim Your Dialysis-Support Protocol" },
+      'Not Sure Yet': { text: "No problem. Start the protocol and track it with your next lab draw.", label: "Claim Your 30-Day Supply" }
+    };
+    grid.querySelectorAll('.stage-pill').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        grid.querySelectorAll('.stage-pill').forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        var stage = btn.getAttribute('data-stage');
+        var info = messages[stage] || { text: '', label: 'Claim Your 30-Day Supply' };
+        feedback.textContent = info.text;
+        feedback.hidden = false;
+        cta.textContent = info.label;
+        cta.setAttribute('href', baseHref + '&ckd_stage=' + encodeURIComponent(stage));
+      });
+    });
+  })();
 
   /* Social proof toast: only fires with real, factual events you configure below.
      Nothing here is fabricated; add your own real recent activity (e.g. from your
