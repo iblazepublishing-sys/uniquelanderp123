@@ -192,6 +192,35 @@
     border-style:dashed;font-size:14px;
   }
 
+  /* ---------- STORY CAROUSEL ---------- */
+  .carousel{position:relative;margin-top:36px;max-width:640px;margin-left:auto;margin-right:auto;}
+  .carousel-viewport{overflow:hidden;border-radius:var(--radius);border:1px solid var(--line);}
+  .carousel-track{display:flex;transition:transform .4s ease;}
+  .carousel-slide{
+    min-width:100%;aspect-ratio:16/10;background:var(--tan);border-left:1px solid var(--tan-line);
+    display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;
+    color:var(--ink-faint);text-align:center;padding:20px;
+  }
+  .carousel-slide:first-child{border-left:none;}
+  .carousel-slide svg{width:34px;height:34px;}
+  .carousel-slide img{width:100%;height:100%;object-fit:cover;}
+  .carousel-slide p{font-weight:700;color:var(--ink-soft);margin:0;font-size:14px;}
+  .carousel-slide span{font-size:12px;}
+  .carousel-btn{
+    position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;
+    background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;
+    cursor:pointer;box-shadow:var(--shadow);font-size:18px;color:var(--ink);
+  }
+  .carousel-btn.prev{left:-18px;}
+  .carousel-btn.next{right:-18px;}
+  .carousel-dots{display:flex;justify-content:center;gap:8px;margin-top:16px;}
+  .carousel-dot{width:8px;height:8px;border-radius:50%;background:var(--tan-line);cursor:pointer;border:none;padding:0;}
+  .carousel-dot.active{background:var(--ink);}
+  @media (max-width:560px){
+    .carousel-btn.prev{left:4px;}
+    .carousel-btn.next{right:4px;}
+  }
+
   /* ---------- DATA TABLE ---------- */
   .data-section{background:var(--cream);}
   .data-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;margin-top:30px;}
@@ -542,9 +571,21 @@
         <span class="verified-tag"><svg><use href="#ic-check"/></svg> Public post, self-reported</span>
       </div>
 
-      <div class="testi-card placeholder">
-        <p style="margin:0;">Add another real, attributed customer story here. A screenshot or quote works.</p>
+    </div>
+
+    <div class="carousel">
+      <div class="carousel-viewport">
+        <div class="carousel-track" id="storyTrack">
+          <div class="carousel-slide"><svg><use href="#ic-image"/></svg><p>Customer story 1</p><span>Add image link here</span></div>
+          <div class="carousel-slide"><svg><use href="#ic-image"/></svg><p>Customer story 2</p><span>Add image link here</span></div>
+          <div class="carousel-slide"><svg><use href="#ic-image"/></svg><p>Customer story 3</p><span>Add image link here</span></div>
+          <div class="carousel-slide"><svg><use href="#ic-image"/></svg><p>Customer story 4</p><span>Add image link here</span></div>
+          <div class="carousel-slide"><svg><use href="#ic-image"/></svg><p>Customer story 5</p><span>Add image link here</span></div>
+        </div>
       </div>
+      <button class="carousel-btn prev" onclick="moveStoryCarousel(-1)" aria-label="Previous story">&#8249;</button>
+      <button class="carousel-btn next" onclick="moveStoryCarousel(1)" aria-label="Next story">&#8250;</button>
+      <div class="carousel-dots" id="storyDots"></div>
     </div>
   </div>
 </section>
@@ -800,6 +841,30 @@
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* Customer story carousel. Replace each .carousel-slide's placeholder content with
+     <img src="your-link.jpg" alt="Customer story"> once you have the 5 image links. */
+  (function(){
+    var track = document.getElementById('storyTrack');
+    var dotsWrap = document.getElementById('storyDots');
+    if(!track || !dotsWrap) return;
+    var slides = track.children;
+    var index = 0;
+    for(var i=0;i<slides.length;i++){
+      var dot = document.createElement('button');
+      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Go to story ' + (i+1));
+      dot.onclick = (function(idx){ return function(){ goToStory(idx); }; })(i);
+      dotsWrap.appendChild(dot);
+    }
+    function update(){
+      track.style.transform = 'translateX(-' + (index*100) + '%)';
+      var dots = dotsWrap.children;
+      for(var j=0;j<dots.length;j++){ dots[j].classList.toggle('active', j === index); }
+    }
+    function goToStory(i){ index = (i + slides.length) % slides.length; update(); }
+    window.moveStoryCarousel = function(dir){ goToStory(index + dir); };
+  })();
 
   function handleOrderSubmit(e){
     e.preventDefault();
