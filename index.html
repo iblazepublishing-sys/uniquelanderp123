@@ -106,7 +106,7 @@
   @media (max-width:820px){ nav.main-links{display:none;} }
 
   /* ---------- HERO ---------- */
-  .hero{background:var(--cream);padding:0;}
+  .hero{background:var(--cream);padding:40px 0 0;} /* was 0 to sit flush under the banner image; bumped back up while the banner's off */
   .hero-banner{
     aspect-ratio:16/6;background:var(--tan);border:1.5px dashed var(--tan-line);border-radius:20px;
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
@@ -450,11 +450,13 @@
 
 <!-- ===================== HERO ===================== -->
 <section class="hero">
+  <!-- Hero banner image, removed to see the page without it. Restore by uncommenting:
   <div class="wrap">
     <div class="hero-banner">
       <img src="https://cdn.shopify.com/s/files/1/0779/9986/6013/files/Gemini_Generated_Image_shou80shou80shou.jpg?v=1787986465" alt="Kidney Remedy" loading="lazy">
     </div>
   </div>
+  -->
   <div class="wrap hero-grid">
     <div>
       <div class="eyebrow"><span class="dot"></span> From a real, public customer post</div>
